@@ -18,8 +18,8 @@ pipeline {
                   steps{
                      
                        
-                      sshagent(['Chandan-1']) {
-                       some block
+                      sshagent(['']) {
+    // some block
 }
                        
                        sh """
