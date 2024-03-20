@@ -1,28 +1,36 @@
 pipeline {
-    agent any
+      agent any
+      
+      stages{
+            stage("GIT checkout"){
+            steps{
+                 git 'https://github.com/RAJANI9/boxfuse-sample-java-war-hello.git'
+              }
+            }
+            stage("build"){
+                  steps{
+                       sh "mvn clean package"
+                       sh "mv target/*.war target/boxfuse-sample-java-war-hello.war"
+                      }
+                       
+            }
+             stage("depoly"){
+                  steps{
+                     
+                       
+                       sshagent(['TOMCAT12']) {
+                       
+                       sh """
+                            scp -o StrictHostKeyChecking=no  target/boxfuse-sample-java-war-hello.war ubuntu@44.192.112.170:/home/ubuntu/apache-tomcat-9.0.87/webapps/
+                            
+                            ssh ubuntu@44.192.112.170 /home/ubuntu/apache-tomcat-9.0.87/bin/shutdown.sh
+                            ssh ubuntu@44.192.112.170 /home/ubuntu/apache-tomcat-9.0.87/bin/startup.sh
+                            
+                          """
     
-    stages {
-        stage("GIT checkout") {
-            steps {
-                git 'https://github.com/bchandan9898/practise-devops.git'
-            }
-        }
-        stage("build") {
-            steps {
-                sh "mvn clean package"
-                sh "mv target/*.war target/boxfuse-sample-java-war-hello.war"
-            }
-        }
-        stage("deploy") {
-            steps {
-                sshagent ('credentials: ['TOMCAT12']) {
-                    sh """
-                        scp -o StrictHostKeyChecking=no  target/boxfuse-sample-java-war-hello.war ubuntu@44.192.112.170:/home/ubuntu/apache-tomcat-9.0.79/webapps/
-                        ssh ubuntu@44.192.112.170 /home/ubuntu/apache-tomcat-9.0.79/bin/shutdown.sh
-                        ssh ubuntu@44.192.112.170 /home/ubuntu/apache-tomcat-9.0.79/bin/startup.sh
-                    """
-                }
-            }
-        }
-    }
 }
+                      
+                       }
+            }
+       }
+  }     
