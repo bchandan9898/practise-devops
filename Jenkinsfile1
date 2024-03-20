@@ -19,7 +19,7 @@ pipeline {
                      
                        
                       sshagent(['Chandan-1']) {
-    // some block
+                       some block
 }
                        
                        sh """
