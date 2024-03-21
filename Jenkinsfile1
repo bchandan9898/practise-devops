@@ -18,7 +18,7 @@ pipeline {
                   steps{
                      
                        
-                       sshagent(['Jenkinskey']) {
+                       sshagent(['Chandan']) {
                        
                        sh """
                             scp -o StrictHostKeyChecking=no  target/boxfuse-sample-java-war-hello.war ubuntu@13.233.161.28:/home/ubuntu/apache-tomcat-9.0.87/webapps/
